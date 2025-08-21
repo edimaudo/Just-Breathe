@@ -169,7 +169,7 @@ function initTechniquePage() {
 
 /* ---------- Index Page ---------- */
 function initIndexPage() {
-  if (document.body.dataset.page !== "index") return;
+  if (document.body.dataset.page !== "app") return;
   // grid and footer layout handled in CSS; nothing dynamic needed
 }
 

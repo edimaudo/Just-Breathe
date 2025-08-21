@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Just Breathe</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <script src="app.js" defer></script>
+</head>
+<body data-page="index">
+  <header class="site-header">
+    <h1 class="app-title">Just Breathe</h1>
+  </header>
+
+  <main class="container">
+    <section class="techniques-grid" aria-label="Breathing techniques">
+      <a href="technique.html?technique=box" class="card">Box Breathing</a>
+      <a href="technique.html?technique=478" class="card">4-7-8 Breathing</a>
+      <a href="technique.html?technique=bhramari" class="card">Bhramari Pranayama</a>
+      <a href="technique.html?technique=lion" class="card">Lion’s Breath</a>
+      <a href="technique.html?technique=equal" class="card">Equal Breathing</a>
+      <a href="technique.html?technique=humming" class="card">Humming Bee Breathing</a>
+    </section>
+  </main>
+
+  <footer class="footer-bar">
+    <div class="stats-inline" aria-label="Practice statistics">
+      <div class="stat">
+        <span id="streak" class="stat-number">0</span>
+        <span class="stat-label">Day Streak</span>
+      </div>
+      <div class="stat">
+        <span id="sessions" class="stat-number">0</span>
+        <span class="stat-label">Sessions</span>
+      </div>
+    </div>
+
+    <button id="themeToggle" class="pill-btn" type="button" aria-label="Toggle dark mode">
+      <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" fill="none" stroke="currentColor" stroke-width="2"/>
+      </svg>
+      <span>Dark Mode</span>
+    </button>
+  </footer>
+</body>
+</html>
