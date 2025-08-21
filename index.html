@@ -3,72 +3,507 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Just Breathe – Inner Calm in Every Breath</title>
+  <title>Just Breathe – Pitch Deck</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
-  <script src="app.js" defer></script>
+  <style>
+    /* Theme Tokens - Copied from your styles.css for self-containment */
+    :root{
+      /* Light (sky blue) */
+      --bg: #eaf6ff;
+      --bg-soft: #e3f1ff;
+      --text: #0f2b3a;
+      --muted: #537589;
+      --card: #ffffff;
+      --border: #cfe4ff;
+      --accent: #3b82f6;
+
+      --btn-bg: #ffffff;
+      --btn-text: #0f2b3a;
+      --btn-border: #bcd9ff;
+
+      --circle-fill: radial-gradient(circle at 30% 30%, #93c5fd, #60a5fa);
+    }
+
+    body.dark{
+      --bg: #0b1320;
+      --bg-soft: #0f1b2b;
+      --text: #e6eef7;
+      --muted: #9bb4c8;
+      --card: #121a29;
+      --border: #243349;
+      --accent: #7cc4ff;
+
+      --btn-bg: #121a29;
+      --btn-text: #e6eef7;
+      --btn-border: #2a3b54;
+
+      --circle-fill: radial-gradient(circle at 30% 30%, #2b6cb0, #1e3a8a);
+    }
+
+    /* Base styles - Copied for self-containment */
+    *{ box-sizing: border-box; }
+    html, body{ height: 100%; }
+    body{
+      margin: 0;
+      font-family: "Poppins", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column; /* Main flex container to stack content and footer */
+      min-height: 100vh;
+      overflow: hidden; /* Prevent body scrollbar if content overflows slides */
+    }
+
+    /* Action button styles - Copied for self-containment */
+    .action-btn{
+      appearance: none;
+      border: 1px solid var(--btn-border);
+      background: var(--btn-bg);
+      color: var(--btn-text);
+      border-radius: 14px;
+      padding: 14px 28px;
+      font-size: 1.05rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: box-shadow .2s ease, transform .06s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .action-btn:hover{ box-shadow: 0 6px 18px rgba(0,0,0,.08); }
+    .action-btn:active{ transform: translateY(1px); }
+    .action-btn.alt{
+      background: var(--accent);
+      color: white;
+      border-color: transparent;
+    }
+
+    /* Pill button styles (used for navigation) */
+    .pill-btn{
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      border-radius: 999px;
+      background: var(--accent);
+      color: white;
+      border: 1px solid transparent;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1rem;
+      line-height: 1;
+      cursor: pointer;
+      transition: box-shadow .2s ease, transform .06s ease, background-color .2s ease;
+    }
+    .pill-btn:hover{ box-shadow: 0 4px 14px rgba(0,0,0,.08); }
+    .pill-btn:active{ transform: translateY(1px); }
+    .pill-btn:disabled {
+      background: var(--muted);
+      cursor: not-allowed;
+      box-shadow: none;
+      transform: none;
+    }
+
+
+    /* Pitch Deck specific layout */
+    .pitch-container { /* Main container for slides, now takes 100% height */
+      position: relative;
+      flex-grow: 1;
+      width: 100%;
+      height: 100%; /* Take up all available height from flex parent (body) */
+      padding-bottom: 80px; /* Make space for fixed navigation */
+      overflow: hidden; /* Prevent content from flowing under nav */
+      box-sizing: border-box; /* Include padding in height calculation */
+    }
+
+    .pitch-slide {
+      position: absolute; /* Stack slides on top of each other */
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%; /* Each slide takes full height of pitch-container */
+      display: none; /* Hidden by default */
+      flex-direction: column;
+      justify-content: flex-start; /* Align content to the top */
+      align-items: center; /* Default align items to center for content */
+      padding: 60px 20px 20px; /* More spacing from top, less from bottom */
+      text-align: center; /* Default text alignment for slide content */
+      box-sizing: border-box;
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
+    }
+
+    .pitch-slide.active {
+      display: flex; /* Show active slide */
+      opacity: 1;
+    }
+
+    .pitch-slide h2 {
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 700;
+      color: var(--text);
+      margin-top: 0; /* Remove default top margin */
+      margin-bottom: 10px; /* Keep h2 closer to h3 */
+      line-height: 1.2;
+      text-align: center; /* Always centered */
+      width: 100%; /* Ensure it spans full width for centering */
+    }
+
+    .pitch-slide h3 {
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 600;
+      color: var(--accent);
+      margin-top: 0; /* Remove default top margin */
+      margin-bottom: 40px; /* More space below h3 */
+      text-align: center; /* Always centered */
+      width: 100%; /* Ensure it spans full width for centering */
+    }
+
+    .pitch-slide p {
+      font-size: clamp(1rem, 1.5vw, 1.2rem);
+      color: var(--muted);
+      max-width: 800px;
+      margin: 0 auto; /* Default to center for paragraphs */
+      line-height: 1.6;
+    }
+
+    /* Feature List Styling for Slide 4 & 6 */
+    .pitch-slide .feature-list {
+      list-style: none;
+      padding: 0;
+      margin: 40px auto; /* Centered with auto margins */
+      max-width: 800px; /* Increased max-width for lists */
+    }
+
+    .pitch-slide .feature-list li {
+      margin-bottom: 25px; /* Increased spacing between list items */
+      display: flex;
+      align-items: flex-start; /* Align icon and text to top of list item */
+      gap: 15px; /* Increased gap between icon and text */
+      text-align: left; /* List item text itself is left aligned within the item */
+    }
+
+    .pitch-slide .feature-list li svg {
+      color: var(--accent);
+      min-width: 36px; /* Increased icon size */
+      min-height: 36px; /* Increased icon size */
+      margin-top: 2px; /* Small adjustment for visual alignment with text */
+      flex-shrink: 0; /* Prevent icon from shrinking */
+    }
+
+    /* Differentiate content subtitle from text */
+    .pitch-slide .feature-list li .feature-text {
+      flex-grow: 1; /* Allow text content to take available width */
+    }
+
+    .pitch-slide .feature-list li strong {
+      display: block; /* Make subtitle a block element to separate from text */
+      font-size: clamp(1.2rem, 1.9vw, 1.5rem); /* Slightly larger font */
+      color: var(--accent); /* Use accent color for emphasis */
+      margin-bottom: 5px; /* Small margin below subtitle */
+      line-height: 1.3;
+      font-weight: 700; /* Make bold for stronger differentiation */
+    }
+
+    .pitch-slide .feature-list li p {
+      font-size: clamp(1rem, 1.5vw, 1.2rem);
+      color: var(--text); /* Use main text color for readability */
+      margin-top: 0; /* No extra margin */
+      line-height: 1.6;
+      max-width: none; /* Remove max-width from inherited p style */
+    }
+
+    .storyboard-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+      width: 100%;
+      max-width: 1000px;
+      margin-top: 40px;
+      align-self: center; /* Center the grid container itself */
+    }
+
+    .storyboard-frame {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,.05);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+      text-align: center; /* Keep storyboard frame text centered */
+    }
+
+    .storyboard-frame img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+      object-fit: cover;
+      max-height: 200px;
+    }
+
+    .storyboard-frame p {
+      margin: 0;
+      font-size: 0.95rem;
+      color: var(--muted);
+    }
+
+    .storyboard-frame span.frame-number {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--accent);
+    }
+
+    .pitch-cta .action-btn {
+      margin-top: 30px;
+      align-self: center; /* Center the button on CTA slides */
+    }
+
+    /* Fixed navigation at the bottom */
+    .pitch-navigation {
+      position: fixed; /* Fixed position relative to viewport */
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      box-sizing: border-box;
+      gap: 15px;
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+      height: 80px; /* Fixed height for consistent nav bar */
+      z-index: 100; /* Ensure it's above all content */
+    }
+
+    /* Hide slide counter */
+    .pitch-navigation #slideCounter {
+      display: none;
+    }
+
+    /* General responsive adjustments */
+    @media (max-width: 768px) {
+      .pitch-slide {
+        padding: 30px 15px 20px; /* Adjusted padding for smaller screens */
+      }
+      .pitch-slide h2 {
+        font-size: 2rem;
+      }
+      .pitch-slide h3 {
+        font-size: 1.5rem;
+        margin-bottom: 30px; /* Adjust spacing for smaller screens */
+      }
+      .pitch-slide p {
+        font-size: 0.95rem;
+      }
+      .pitch-slide .feature-list {
+        margin: 30px auto; /* Center list on small screens */
+        max-width: 100%; /* Ensure full width on small screens */
+      }
+      .pitch-slide .feature-list li {
+        font-size: 1rem;
+        margin-bottom: 20px; /* Adjust spacing for smaller screens */
+        gap: 10px; /* Smaller gap on mobile */
+      }
+      .pitch-slide .feature-list li svg {
+        min-width: 30px; /* Slightly smaller icons on mobile */
+        min-height: 30px;
+      }
+      .pitch-slide .feature-list li strong {
+        font-size: 1.1rem; /* Adjust font size on mobile */
+      }
+      .pitch-slide .feature-list li p {
+        font-size: 0.95rem; /* Adjust font size on mobile */
+      }
+      .storyboard-frame img {
+        max-height: 150px;
+      }
+      .pitch-navigation {
+        padding: 15px;
+      }
+    }
+  </style>
 </head>
-<body data-page="landing">
-  <header class="site-header landing-header">
-    <h1 class="app-title">Just Breathe</h1>
-    <button id="themeToggle" class="pill-btn theme-toggle-landing" type="button" aria-label="Toggle dark mode">
-      <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" fill="none" stroke="currentColor" stroke-width="2"/>
+<body class="pitch-deck">
+
+  <div class="pitch-container">
+    <!-- Slide 1: Title Slide -->
+    <section class="pitch-slide active" id="slide-1">
+      <h2>Just Breathe: Your Path to Inner Calm</h2>
+      <br><br>
+      <a href="index.html" class="action-btn alt large-btn">Visit Just Breathe App</a>
+    </section>
+
+    <!-- Slide 2: The Problem -->
+    <section class="pitch-slide" id="slide-2">
+      <h2>The Daily Grind: Stress, Anxiety, and Distraction</h2>
+      <br><br>
+      <p>In today's fast-paced world, many struggle with constant stress, overwhelming anxiety, and a fragmented focus. We're always on, rarely taking a moment to reset. This impacts our well-being, productivity, and overall quality of life.</p>
+      
+    </section>
+
+    <!-- Slide 3: Our Solution: Just Breathe -->
+    <section class="pitch-slide" id="slide-3">
+      <h2>Accessible Calm for Everyone</h2>
+      <br><br>
+      <p>Just Breathe is a user-friendly web application designed to bring the benefits of mindful breathing directly to you, anywhere, anytime. It's for anyone seeking a quick mental break, a way to de-stress, or a tool to improve concentration. From busy professionals to students, parents, or anyone looking for a moment of peace.</p>
+
+    </section>
+
+    <!-- Slide 4: Key Features -->
+    <section class="pitch-slide" id="slide-4">
+      <h2>Unlock Your Calm: Powerful Features</h2>
+      <ul class="feature-list">
+        <li>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <div class="feature-text">
+            <strong>Diverse Guided Techniques</strong>
+            <p>Access a rich library of scientifically-backed breathing exercises like Box, 4-7-8, and Bhramari, each with clear, step-by-step guidance to master your breath and cultivate inner peace.</p>
+          </div>
+        </li>
+        <li>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h3l2 3h9l2-3h3a2 2 0 012 2v14zM10 12l2 2 4-4"/></svg>
+          <div class="feature-text">
+            <strong>Track Your Journey & Progress</strong>
+            <p>Stay motivated and build healthy habits with intuitive progress tracking. Monitor your daily streaks grow and visualize your consistency over time, celebrating every step towards mindfulness.</p>
+          </div>
+        </li>
+        <li>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+          <div class="feature-text">
+            <strong>Seamless Personalization</strong>
+            <p>Tailor your experience with an effortless light and dark mode toggle, ensuring optimal comfort and readability in any environment, day or night.</p>
+          </div>
+        </li>
+      </ul>
+      
+    </section>
+
+    <!-- Slide 5: Live Demo (formerly slide 6, now re-numbered) -->
+    <section class="pitch-slide" id="slide-5">
+      <h2>Experience Just Breathe Live!</h2>
+      <br><br>
+      <p>Ready to see how "Just Breathe" can transform your daily routine? Click the button below to launch the web app and try a guided breathing technique right now.</p>
+      <br><br>
+      <a href="index.html" class="action-btn alt large-btn">Demo Time</a>
+    </section>
+
+    <!-- Slide 6: Expanding Our Impact (formerly slide 7, now re-numbered) -->
+    <section class="pitch-slide" id="slide-6">
+      <h2>Expanding Our Impact</h2>
+      <ul class="feature-list">
+        <li>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <div class="feature-text">
+            <strong>Mobile Applications</strong>
+            <p>Develop native iOS and Android applications to extend reach and provide a more integrated mobile experience with offline capabilities and platform-specific features.</p>
+          </div>
+        </li>
+        <li>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5v14"/></svg>
+          <div class="feature-text">
+            <strong>Enriched Content Library</strong>
+            <p>Introduce more advanced breathing techniques, guided meditation sessions, and calming soundscapes to deepen the user's practice and cater to diverse needs.</p>
+          </div>
+        </li>
+        <li>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 00-3 3v7c0 1.66 1.34 3 3 3s3-1.34 3-3V5a3 3 0 00-3-3zM5 9H4a2 2 0 00-2 2v3a8 8 0 0016 0v-3a2 2 0 00-2-2h-1M12 18v4M8 22h8"/></svg>
+          <div class="feature-text">
+            <strong>AI-Powered Personalization</strong>
+            <p>Implement intelligent recommendations and personalized breathing programs based on user preferences, stress levels, and progress data for a truly tailored journey.</p>
+          </div>
+        </li>
+        <li>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 18a2 2 0 00-2-2H9a2 2 0 00-2 2m4-11V3m-3 6l.92-5.5m6.16 0L15 9M12 21v-4M7 21l-1-1M17 21l1-1M19 11h-2M5 11H3M12 5.5V5M12 15.5V15"/></svg>
+          <div class="feature-text">
+            <strong>Community & Social Features</strong>
+            <p>Foster a supportive user community with options to share progress, participate in challenges, and connect with others on their mindfulness journey.</p>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <!-- Slide 7: Call to Action (formerly slide 8, now re-numbered) -->
+    <section class="pitch-slide pitch-cta" id="slide-7">
+      <br><br>
+      <h2>Join Us on the Journey to Inner Calm.</h2>
+      <p>Ready to integrate mindfulness into your daily routine? Start your journey to reduced stress and enhanced focus today. Visit the Just Breathe app now and discover your path to inner calm.</p>
+      <br><br>
+      <a href="index.html" class="action-btn alt large-btn">Start Breathing Now</a>
+    </section>
+  </div>
+
+  <div class="pitch-navigation">
+    <button id="prevSlide" class="pill-btn" type="button">
+      <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M9 18l-6-6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
-      <span>Dark Mode</span>
+      <span>Previous</span>
     </button>
-  </header>
+    <button id="nextSlide" class="pill-btn" type="button">
+      <span>Next</span>
+      <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M15 18l6-6-6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+  </div>
 
-  <main class="container landing-main">
-    <section class="hero-section">
-      <h2 class="hero-headline">Find Your Inner Calm, One Breath at a Time.</h2>
-      <p class="hero-subheadline">
-        Discover simple yet powerful breathing techniques to reduce stress, improve focus, and enhance your well-being.
-      </p>
-      <div class="hero-actions">
-        <a href="app.html" class="action-btn alt large-btn">Start Breathing Now</a>
-      </div>
-    </section>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const slides = document.querySelectorAll(".pitch-slide");
+      const prevBtn = document.getElementById("prevSlide");
+      const nextBtn = document.getElementById("nextSlide");
+      let currentSlideIndex = 0;
 
-    <section class="features-section">
-      <h3 class="section-title">Why Just Breathe?</h3>
-      <div class="features-grid">
-        <div class="feature-card">
-          <div class="card-icon">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 2v20M17 5H7M17 19H7"/>
-            </svg>
-          </div>
-          <h4>Guided Techniques</h4>
-          <p>Easy-to-follow instructions for proven breathing exercises.</p>
-        </div>
-        <div class="feature-card">
-          <div class="card-icon">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
-            </svg>
-          </div>
-          <h4>Stress Reduction</h4>
-          <p>Calm your nervous system and alleviate daily anxiety.</p>
-        </div>
-        <div class="feature-card">
-          <div class="card-icon">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="10"/>
-              <line x1="12" y1="8" x2="12" y2="16"/>
-              <line x1="8" y1="12" x2="16" y2="12"/>
-            </svg>
-          </div>
-          <h4>Improved Focus</h4>
-          <p>Enhance concentration and mental clarity for better productivity.</p>
-        </div>
-      </div>
-    </section>
+      function showSlide(index) {
+        // Ensure the index is within bounds
+        if (index < 0 || index >= slides.length) {
+            console.error("Slide index out of bounds:", index);
+            return;
+        }
 
-    <section class="cta-section">
-      <h3 class="section-title">Ready to find your peace?</h3>
-      <a href="app.html" class="action-btn alt large-btn">Explore Techniques</a>
-    </section>
-  </main>
+        // Hide all slides
+        slides.forEach(slide => {
+          slide.classList.remove("active");
+          slide.style.zIndex = '0'; // Explicitly set z-index for hidden slides
+        });
+
+        // Show the active slide
+        const activeSlide = slides[index];
+        if (activeSlide) {
+          activeSlide.classList.add("active");
+          activeSlide.style.zIndex = '1'; // Ensure active slide is on top
+        }
+
+        updateNavigationButtons();
+      }
+
+      function updateNavigationButtons() {
+        prevBtn.disabled = currentSlideIndex === 0;
+        nextBtn.disabled = currentSlideIndex === slides.length - 1;
+      }
+
+      prevBtn.addEventListener("click", () => {
+        if (currentSlideIndex > 0) {
+          currentSlideIndex--;
+          showSlide(currentSlideIndex);
+        }
+      });
+
+      nextBtn.addEventListener("click", () => {
+        if (currentSlideIndex < slides.length - 1) {
+          currentSlideIndex++;
+          showSlide(currentSlideIndex);
+        }
+      });
+
+      // Initial display
+      showSlide(currentSlideIndex);
+    });
+  </script>
 </body>
 </html>
