@@ -1,7 +1,5 @@
-/* ================================
-   Just Breathe — App Logic
-   ================================ */
-
+// Just Breathe — App Logic
+   
 const TECHNIQUES = {
   box: {
     title: "Box Breathing",
@@ -53,7 +51,7 @@ const TECHNIQUES = {
   },
 };
 
-/* ---------- Theme ---------- */
+// Themes
 function applyThemeFromStorage() {
   const saved = localStorage.getItem("theme") || "light";
   document.body.classList.toggle("dark", saved === "dark");
@@ -71,7 +69,7 @@ function initThemeToggle() {
   });
 }
 
-/* ---------- Stats ---------- */
+// Key stats
 function loadStatsIntoDOM() {
   const streakEl = document.getElementById("streak");
   const sessionsEl = document.getElementById("sessions");
@@ -102,7 +100,7 @@ function updateStatsOnSessionComplete() {
   loadStatsIntoDOM();
 }
 
-/* ---------- Technique Page ---------- */
+// Techniques
 function initTechniquePage() {
   if (document.body.dataset.page !== "technique") return;
 
@@ -170,7 +168,7 @@ function initTechniquePage() {
 /* ---------- Index Page ---------- */
 function initIndexPage() {
   if (document.body.dataset.page !== "app") return;
-  // grid and footer layout handled in CSS; nothing dynamic needed
+  
 }
 
 /* ---------- Boot ---------- */
